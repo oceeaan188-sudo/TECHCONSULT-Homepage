@@ -40,9 +40,46 @@
     page: 'home', 
     mobileMenu: false, 
     activeMenu: null,
+
     industries: ['金融（銀行・証券・保険）', '製造（自動車・一般製造）', 'ハイテク（IT・テクノロジー）', 'ヘルスケア（医療・ライフサイエンス）', '消費財・小売', 'エネルギー・公共', '通信・メディア', '旅行・ホスピタリティ'],
     services: ['IT戦略・DXコンサルティング', 'クラウド・モダナイゼーション', 'システムアーキテクチャ設計', 'データ・AI活用支援', '業務システム導入', 'DevOps・運用最適化', 'セキュリティ・ガバナンス'],
-    careers: ['ITコンサルタント', 'プロジェクトマネージャー', 'システムアーキテクト', 'アプリケーションエンジニア', 'クラウドエンジニア', 'データ／AIエンジニア', 'インフラエンジニア']
+    careers: ['ITコンサルタント', 'プロジェクトマネージャー', 'システムアーキテクト', 'アプリケーションエンジニア', 'クラウドエンジニア', 'データ／AIエンジニア', 'インフラエンジニア'],
+
+    // ✅ 新增状态
+    success: false,
+    error: false,
+    loading: false,
+
+    // ✅ 新增方法（核心）
+    async submitForm(e) {
+        this.success = false;
+        this.error = false;
+        this.loading = true;
+
+        const formData = new FormData(e.target);
+
+        try {
+            const response = await fetch('https://formspree.io/f/xkoqdqdq', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                this.success = true;
+                e.target.reset();
+            } else {
+                this.error = true;
+            }
+        } catch (err) {
+            this.error = true;
+        } finally {
+            this.loading = false;
+        }
+    }
+
 }" class="bg-white text-slate-900 leading-relaxed">
 
     <header class="fixed w-full z-50 border-b border-slate-100 glass-header">
@@ -312,22 +349,41 @@
                         <h2 class="text-4xl font-black mb-4 uppercase italic">Get In Touch</h2>
                         <p class="text-slate-500">プロジェクトのご相談、お見積りなどお気軽にお問い合わせください。</p>
                     </div>
-                    <form @submit.prevent="alert('お問い合わせありがとうございます。担当者よりご連絡いたします。')" class="space-y-6">
+                    <form @submit.prevent="submitForm" class="space-y-6">
+                    
                         <div class="grid md:grid-cols-2 gap-6 text-left">
                             <div>
                                 <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">お名前</label>
-                                <input type="text" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all">
+                                <input type="text" name="name" required
+                                    class="w-full px-4 py-4 bg-slate-50 border border-slate-100">
                             </div>
                             <div>
                                 <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">メールアドレス</label>
-                                <input type="email" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all">
+                                <input type="email" name="email" required
+                                    class="w-full px-4 py-4 bg-slate-50 border border-slate-100">
                             </div>
                         </div>
+                    
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">お問い合わせ内容</label>
-                            <textarea rows="6" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all"></textarea>
+                            <textarea name="message" rows="6" required
+                                class="w-full px-4 py-4 bg-slate-50 border border-slate-100"></textarea>
                         </div>
-                        <button type="submit" class="w-full py-5 bg-slate-900 text-white font-bold tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">送信する (SEND MESSAGE)</button>
+                    
+                        <button type="submit"
+                            class="w-full py-5 bg-slate-900 text-white font-bold hover:bg-blue-600">
+                            送信する
+                        </button>
+                    
+                        <!-- ✅ 成功提示 -->
+                        <p x-show="success" class="text-green-600 mt-4">
+                            送信成功しました！
+                        </p>
+                    
+                        <!-- ❌ 错误提示 -->
+                        <p x-show="error" class="text-red-600 mt-4">
+                            送信に失敗しました。
+                        </p>
                     </form>
                 </div>
             </div>
