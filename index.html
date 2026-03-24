@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechConsult | テクノロジーでビジネス変革を実現</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        [x-cloak] { display: none !important; }
+        .mega-menu-content {
+            transition: all 0.3s ease-out;
+            transform-origin: top;
+        }
+        .nav-underline {
+            position: relative;
+        }
+        .nav-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+        .nav-underline:hover::after { width: 100%; }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body x-data="{ 
+    page: 'home', 
+    mobileMenu: false, 
+    activeMenu: null,
+    industries: ['金融（銀行・証券・保険）', '製造（自動車・一般製造）', 'ハイテク（IT・テクノロジー）', 'ヘルスケア（医療・ライフサイエンス）', '消費財・小売', 'エネルギー・公共', '通信・メディア', '旅行・ホスピタリティ'],
+    services: ['IT戦略・DXコンサルティング', 'クラウド・モダナイゼーション', 'システムアーキテクチャ設計', 'データ・AI活用支援', '業務システム導入', 'DevOps・運用最適化', 'セキュリティ・ガバナンス'],
+    careers: ['ITコンサルタント', 'プロジェクトマネージャー', 'システムアーキテクト', 'アプリケーションエンジニア', 'クラウドエンジニア', 'データ／AIエンジニア', 'インフラエンジニア']
+}" class="bg-white text-slate-900 leading-relaxed">
+
+    <header class="fixed w-full z-50 border-b border-slate-100 glass-header">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 cursor-pointer" @click="page = 'home'">
+                    <span class="text-2xl font-black tracking-tighter text-slate-900">TECH<span class="text-blue-600">CONSULT</span></span>
+                </div>
+
+                <nav class="hidden lg:flex space-x-8 items-center h-full">
+                    <a @click="page = 'home'" class="nav-underline cursor-pointer text-sm font-medium py-2">ホーム</a>
+                    
+                    <div class="relative h-full flex items-center group" @mouseenter="activeMenu = 'industry'" @mouseleave="activeMenu = null">
+                        <a @click="page = 'industries'" class="nav-underline cursor-pointer text-sm font-medium py-2 flex items-center gap-1">
+                            業界 <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div x-show="activeMenu === 'industry'" x-cloak x-transition.opacity
+                             class="mega-menu-content absolute top-[80px] left-[-200px] w-[800px] bg-white shadow-2xl border border-slate-100 p-8 grid grid-cols-3 gap-6 rounded-b-xl">
+                            <div class="col-span-1 border-r border-slate-100 pr-6">
+                                <h4 class="font-bold text-lg mb-2">業界別ソリューション</h4>
+                                <p class="text-xs text-slate-400">各業界特有の課題に対し、深い知見と最新技術を組み合わせて解決策を提示します。</p>
+                            </div>
+                            <div class="col-span-2 grid grid-cols-2 gap-x-4 gap-y-2">
+                                <template x-for="item in industries" :key="item">
+                                    <a @click="page = 'industries'; activeMenu = null" class="text-sm text-slate-600 hover:text-blue-600 hover:bg-slate-50 p-2 rounded transition-all" x-text="item"></a>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative h-full flex items-center group" @mouseenter="activeMenu = 'service'" @mouseleave="activeMenu = null">
+                        <a @click="page = 'services'" class="nav-underline cursor-pointer text-sm font-medium py-2 flex items-center gap-1">
+                            サービス <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div x-show="activeMenu === 'service'" x-cloak x-transition.opacity
+                             class="mega-menu-content absolute top-[80px] left-[-400px] w-[900px] bg-slate-900 text-white shadow-2xl p-10 grid grid-cols-4 gap-8 rounded-b-xl">
+                            <div class="col-span-1">
+                                <div class="w-12 h-1 px-0 bg-blue-600 mb-4"></div>
+                                <h4 class="font-bold text-xl mb-4">提供サービス</h4>
+                                <p class="text-xs text-slate-400 leading-loose">戦略策定から実行、運用まで一貫したデジタル・トランスフォーメーションを支援。</p>
+                            </div>
+                            <div class="col-span-3 grid grid-cols-2 gap-4">
+                                <template x-for="item in services" :key="item">
+                                    <div @click="page = 'services'; activeMenu = null" class="group/item cursor-pointer p-4 border border-slate-800 rounded-lg hover:bg-slate-800 transition-all">
+                                        <div class="text-sm font-bold group-hover/item:text-blue-400" x-text="item"></div>
+                                        <div class="text-[10px] text-slate-500 mt-1 uppercase">Consulting & Tech</div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative h-full flex items-center group" @mouseenter="activeMenu = 'career'" @mouseleave="activeMenu = null">
+                        <a @click="page = 'careers'" class="nav-underline cursor-pointer text-sm font-medium py-2 flex items-center gap-1">
+                            キャリア <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div x-show="activeMenu === 'career'" x-cloak x-transition.opacity
+                             class="mega-menu-content absolute top-[80px] left-[-150px] w-[300px] bg-white shadow-2xl border border-slate-100 rounded-b-xl overflow-hidden">
+                            <template x-for="item in careers" :key="item">
+                                <a @click="page = 'careers'; activeMenu = null" class="block px-6 py-4 text-sm hover:bg-blue-50 hover:text-blue-600 border-b border-slate-50 last:border-0 transition-colors" x-text="item"></a>
+                            </template>
+                        </div>
+                    </div>
+
+                    <a @click="page = 'about'" class="nav-underline cursor-pointer text-sm font-medium py-2">会社情報</a>
+                    <a @click="page = 'news'" class="nav-underline cursor-pointer text-sm font-medium py-2">お知らせ</a>
+                    <a @click="page = 'contact'" class="px-6 py-3 bg-slate-900 text-white text-xs font-bold rounded hover:bg-blue-600 transition-all uppercase tracking-widest">お問い合わせ</a>
+                </nav>
+
+                <button @click="mobileMenu = !mobileMenu" class="lg:hidden text-2xl text-slate-900"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        
+        <div x-show="mobileMenu" x-cloak class="lg:hidden bg-white border-t border-slate-100 p-6 space-y-4 shadow-xl">
+            <a @click="page = 'home'; mobileMenu = false" class="block font-bold">ホーム</a>
+            <a @click="page = 'industries'; mobileMenu = false" class="block font-bold">業界</a>
+            <a @click="page = 'services'; mobileMenu = false" class="block font-bold">サービス</a>
+            <a @click="page = 'careers'; mobileMenu = false" class="block font-bold">キャリア</a>
+            <a @click="page = 'about'; mobileMenu = false" class="block font-bold text-blue-600">会社情報</a>
+            <a @click="page = 'contact'; mobileMenu = false" class="block font-bold">お問い合わせ</a>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <template x-if="page === 'home'">
+            <div>
+                <section class="relative py-32 lg:py-52 overflow-hidden bg-gradient-to-tr from-slate-50 to-white">
+                    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+                        <div class="max-w-3xl">
+                            <h1 class="text-5xl lg:text-8xl font-black tracking-tighter text-slate-900 mb-8 leading-none">
+                                テクノロジーで<br><span class="text-blue-600">ビジネス変革</span>を<br>実現する。
+                            </h1>
+                            <p class="text-xl text-slate-500 mb-12 leading-relaxed">
+                                私たちは、複雑化するデジタル社会において、戦略策定から最先端技術の実装まで一貫して支援するテックコンサルティングファームです。
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <button @click="page = 'services'" class="px-10 py-5 bg-slate-900 text-white font-bold rounded shadow-2xl hover:bg-blue-600 transition-all">サービスを見る</button>
+                                <button @click="page = 'about'" class="px-10 py-5 border border-slate-200 font-bold rounded hover:bg-slate-50 transition-all">私たちについて</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 h-full bg-slate-900/5 -skew-x-12"></div>
+                </section>
+
+                <section class="py-24 bg-white">
+                    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                            <div class="group cursor-pointer" @click="page = 'services'">
+                                <div class="text-4xl text-blue-600 mb-6"><i class="fas fa-lightbulb"></i></div>
+                                <h3 class="text-xl font-bold mb-4 group-hover:text-blue-600 transition-colors">戦略コンサルティング</h3>
+                                <p class="text-sm text-slate-500">市場分析に基づいたデジタルトランスフォーメーションのロードマップを策定します。</p>
+                            </div>
+                            <div class="group cursor-pointer" @click="page = 'services'">
+                                <div class="text-4xl text-blue-600 mb-6"><i class="fas fa-microchip"></i></div>
+                                <h3 class="text-xl font-bold mb-4 group-hover:text-blue-600 transition-colors">次世代インフラ構築</h3>
+                                <p class="text-sm text-slate-500">クラウドネイティブな環境構築により、ビジネスの俊敏性と拡張性を最大化します。</p>
+                            </div>
+                            <div class="group cursor-pointer" @click="page = 'services'">
+                                <div class="text-4xl text-blue-600 mb-6"><i class="fas fa-shield-halved"></i></div>
+                                <h3 class="text-xl font-bold mb-4 group-hover:text-blue-600 transition-colors">ガバナンス＆リスク</h3>
+                                <p class="text-sm text-slate-500">進化し続けるサイバー脅威から企業の重要資産を守り、信頼される経営を支援します。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </template>
+
+        <template x-if="page === 'services'">
+            <div class="py-20 animate-in fade-in duration-500">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="mb-20">
+                        <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4 italic">// SERVICES</h2>
+                        <h3 class="text-5xl font-bold">専門性の高いサービスライン</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <template x-for="s in services" :key="s">
+                            <div class="p-10 border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl transition-all rounded-xl group">
+                                <h4 class="text-2xl font-bold mb-4" x-text="s"></h4>
+                                <p class="text-slate-500 mb-8 leading-loose">
+                                    ビジネスの成果を最大化するために、最新の技術トレンドと業界のベストプラクティスを融合させたソリューションを提供します。経験豊富なコンサルタントが伴走し、変革の全プロセスをサポートいたします。
+                                </p>
+                                <a class="text-blue-600 font-bold flex items-center gap-2 group-hover:gap-4 transition-all">詳細を見る <i class="fas fa-arrow-right text-sm"></i></a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="page === 'industries'">
+            <div class="py-20 bg-slate-900 text-white min-h-screen">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <h2 class="text-5xl font-bold mb-20 text-center">Industry Expertise</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <template x-for="ind in industries" :key="ind">
+                            <div class="aspect-square border border-slate-800 flex flex-col items-center justify-center p-6 text-center hover:bg-blue-600 transition-all cursor-pointer group">
+                                <div class="text-2xl mb-4 text-slate-500 group-hover:text-white"><i class="fas fa-city"></i></div>
+                                <span class="font-bold text-sm tracking-tight" x-text="ind"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="page === 'about'">
+            <div class="py-24">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="grid lg:grid-cols-2 gap-20 items-center mb-32">
+                        <div>
+                            <h2 class="text-4xl font-black mb-8">テクノロジーの力で、<br>社会の可能性を広げる。</h2>
+                            <p class="text-slate-500 text-lg leading-loose mb-6">
+                                TECHCONSULTは、創業以来、数多くの企業のデジタルトランスフォーメーションを支援してきました。私たちのミッションは、単なる技術提供にとどまらず、お客様のビジネスモデルそのものを進化させ、持続可能な未来を共に築くことです。
+                            </p>
+                            <div class="grid grid-cols-2 gap-8 py-8 border-t border-slate-100">
+                                <div><div class="text-3xl font-bold">200+</div><div class="text-xs text-slate-400 uppercase">Consultants</div></div>
+                                <div><div class="text-3xl font-bold">15+</div><div class="text-xs text-slate-400 uppercase">Global Locations</div></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 h-[500px] rounded-3xl flex items-center justify-center text-slate-300">
+                            <i class="fas fa-building text-9xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-12 rounded-3xl border border-slate-100">
+                        <h3 class="text-2xl font-bold mb-8">本社所在地</h3>
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <div class="space-y-4">
+                                <p class="font-bold">TECHCONSULT 株式会社 (本社)</p>
+                                <p class="text-slate-500">〒116-0002<br>東京都荒川区荒川 2-2-1</p>
+                                <p class="text-slate-500">TEL: 03-XXXX-XXXX</p>
+                            </div>
+                            <div class="h-48 bg-white border border-slate-200 rounded-xl flex items-center justify-center italic text-slate-400">
+                                [ Map Placeholder ]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="page === 'news'">
+            <div class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="flex justify-between items-center mb-16">
+                        <h2 class="text-4xl font-bold tracking-tighter text-slate-900 leading-none">News & Insights</h2>
+                        <div class="hidden md:flex gap-4">
+                            <button class="px-4 py-2 text-xs font-bold border-b-2 border-slate-900">すべて</button>
+                            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-900">プレスリリース</button>
+                            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-900">採用</button>
+                            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-900">ブログ</button>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="group flex flex-col md:flex-row gap-6 p-8 border-b border-slate-100 hover:bg-slate-50 transition-all cursor-pointer">
+                            <div class="w-32">
+                                <div class="text-sm font-bold">2026.03.24</div>
+                                <div class="text-[10px] bg-blue-100 text-blue-600 inline-block px-2 py-0.5 rounded mt-2 font-bold uppercase">Press Release</div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-bold group-hover:text-blue-600 transition-colors">金融業界向け次世代決済プラットフォームの導入支援を開始</h4>
+                                <p class="text-sm text-slate-500 mt-2">当社は、グローバルな金融規制に対応しつつ、超高速なトランザクション処理を可能にする新プラットフォームの展開をスタートしました。</p>
+                            </div>
+                        </div>
+                        <div class="group flex flex-col md:flex-row gap-6 p-8 border-b border-slate-100 hover:bg-slate-50 transition-all cursor-pointer">
+                            <div class="w-32">
+                                <div class="text-sm font-bold">2026.03.15</div>
+                                <div class="text-[10px] bg-emerald-100 text-emerald-600 inline-block px-2 py-0.5 rounded mt-2 font-bold uppercase">Career</div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-bold group-hover:text-blue-600 transition-colors">2027年度新卒採用および中途採用の拡大について</h4>
+                                <p class="text-sm text-slate-500 mt-2">事業拡大に伴い、新たに50名規模のエンジニアおよびコンサルタント職の募集を開始いたしました。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="page === 'careers'">
+            <div class="py-24 bg-blue-50">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-20">
+                        <h2 class="text-5xl font-bold mb-8">未来を共に創る、<br>情熱を求めています。</h2>
+                        <p class="text-slate-600">あなたの専門性と創造性を、世界を変えるプロジェクトで発揮しませんか。</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <template x-for="job in careers" :key="job">
+                            <div class="p-8 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all rounded-xl border border-slate-100">
+                                <div class="text-xs font-bold text-blue-600 mb-2">FULL TIME</div>
+                                <h4 class="text-lg font-bold mb-4" x-text="job"></h4>
+                                <p class="text-xs text-slate-400 mb-6">プロジェクトの成功を牽引し、クライアントに本質的な価値を提供するプロフェッショナルな役割です。</p>
+                                <button class="w-full py-3 border border-slate-900 text-xs font-bold hover:bg-slate-900 hover:text-white transition-all">詳細を見る</button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="page === 'contact'">
+            <div class="py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-black mb-4 uppercase italic">Get In Touch</h2>
+                        <p class="text-slate-500">プロジェクトのご相談、お見積りなどお気軽にお問い合わせください。</p>
+                    </div>
+                    <form @submit.prevent="alert('お問い合わせありがとうございます。担当者よりご連絡いたします。')" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6 text-left">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">お名前</label>
+                                <input type="text" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">メールアドレス</label>
+                                <input type="email" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">お問い合わせ内容</label>
+                            <textarea rows="6" required class="w-full px-4 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 transition-all"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-5 bg-slate-900 text-white font-bold tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">送信する (SEND MESSAGE)</button>
+                    </form>
+                </div>
+            </div>
+        </template>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white py-20 mt-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 border-b border-slate-800 pb-16">
+                <div class="col-span-1">
+                    <span class="text-xl font-black tracking-tighter">TECHCONSULT</span>
+                    <p class="mt-6 text-slate-400 text-xs leading-loose">
+                        テクノロジーとビジネスの融合。<br>
+                        私たちは、デジタルの力で企業の変革を加速させるグローバルコンサルティングパートナーです。
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-8 text-blue-500 italic">Explore</h5>
+                    <ul class="space-y-4 text-xs text-slate-400">
+                        <li><a @click="page = 'industries'" class="hover:text-white transition-colors cursor-pointer">業界別サービス</a></li>
+                        <li><a @click="page = 'services'" class="hover:text-white transition-colors cursor-pointer">ソリューション</a></li>
+                        <li><a @click="page = 'careers'" class="hover:text-white transition-colors cursor-pointer">採用情報</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-8 text-blue-500 italic">Office</h5>
+                    <p class="text-xs text-slate-400 leading-loose">
+                        東京都荒川区荒川 2-2-1<br>
+                        TECHCONSULT 本社ビル<br>
+                        contact@techconsult.jp
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-8 text-blue-500 italic">Social</h5>
+                    <div class="flex gap-6 text-xl">
+                        <a href="#" class="hover:text-blue-400"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-blue-400"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-500 uppercase tracking-widest">
+                <p>&copy; 2026 TECHCONSULT INC. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
